@@ -1,0 +1,6 @@
+import { Ionicons } from "@expo/vector-icons";
+import { Tabs } from "expo-router";
+import { theme } from "../../src/constants/theme";
+const icons:Record<string,keyof typeof Ionicons.glyphMap>={index:"sunny-outline",pantry:"leaf-outline",shopping:"cart-outline",recipes:"restaurant-outline",finance:"wallet-outline"};
+const labels:Record<string,string>={index:"Inicio",pantry:"Despensa",shopping:"Compra",recipes:"Recetas",finance:"Dinero"};
+export default function TabLayout(){return <Tabs screenOptions={({route})=>({headerShown:false,tabBarActiveTintColor:theme.colors.greenDark,tabBarInactiveTintColor:theme.colors.muted,tabBarLabelStyle:{fontSize:10,fontWeight:"700",marginBottom:3},tabBarStyle:{height:66,paddingTop:8,borderTopColor:theme.colors.line,backgroundColor:"#FFFEFA"},tabBarIcon:({color,size})=><Ionicons name={icons[route.name]||"ellipse-outline"} size={size} color={color}/>,tabBarLabel:labels[route.name]||route.name})}><Tabs.Screen name="index"/><Tabs.Screen name="pantry"/><Tabs.Screen name="shopping"/><Tabs.Screen name="recipes"/><Tabs.Screen name="finance"/></Tabs>}

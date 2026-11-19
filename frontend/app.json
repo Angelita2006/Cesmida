@@ -1,0 +1,23 @@
+{
+  "expo": {
+    "name": "Cesmida",
+    "slug": "cesmida",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "scheme": "cesmida",
+    "userInterfaceStyle": "light",
+    "icon": "./assets/cesmida-icon.png",
+    "plugins": ["expo-router"],
+    "android": {
+      "package": "com.cesmida.personal",
+      "versionCode": 1,
+      "softwareKeyboardLayoutMode": "resize",
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/cesmida-icon.png",
+        "backgroundColor": "#003F32"
+      }
+    },
+    "web": { "bundler": "metro", "output": "static" },
+    "experiments": { "typedRoutes": true }
+  }
+}
