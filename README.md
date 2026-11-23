@@ -19,7 +19,25 @@ Para generar el instalador de escritorio Windows: desde `frontend`, ejecuta `npm
 
 Para generar una APK Android instalable: desde `frontend`, ejecuta primero `npx eas-cli login` y después `npm run build:android`. La APK se construye con Expo Application Services y requiere una cuenta Expo. Para usar el backend del PC desde la app Android nativa, configura `EXPO_PUBLIC_API_URL` con `http://IP-LOCAL-DEL-PC:8001` durante la compilación. La APK y la PWA móvil se conectan al servidor del PC; ese servidor debe estar funcionando en la misma red.
 
-Para publicarla en Internet, apunta el dominio del servidor a Docker y termina HTTPS con Caddy, Nginx o un proxy TLS equivalente. Añade el origen HTTPS a ALLOWED_ORIGINS. No expongas el puerto 5432 de PostgreSQL.
+## Publicar la web y distribuir las aplicaciones
+
+La web puede publicarse gratis en Vercel usando el subdominio que proporciona (`*.vercel.app`); no hace falta comprar un dominio:
+
+1. Importa el repositorio `Angelita2006/Cesmida` en Vercel.
+2. Configura **Root Directory** como `frontend`.
+3. Vercel leerá `frontend/vercel.json`: el comando de compilación es `npm run build:web` y la salida estática es `dist`.
+4. Después del primer despliegue, Vercel asigna una URL `*.vercel.app`. La web necesita una API pública en HTTPS: configura `EXPO_PUBLIC_API_URL` en **Project Settings → Environment Variables** con la URL base de esa API y vuelve a desplegar.
+
+Vercel publica la web, pero no ejecuta PostgreSQL para esta aplicación. La API FastAPI y la base de datos deben desplegarse aparte. Antes de conectar una base de datos con datos reales o abrir el servicio a más personas, hace falta integrar Supabase Auth y aislar los datos por cuenta: la API actual no tiene autenticación y todos sus clientes comparten los mismos datos. No publiques una API conectada a datos reales hasta completar ese trabajo.
+
+La página `/downloads` enlaza a **GitHub Releases**. Para distribuir las aplicaciones, crea una versión en GitHub y adjunta sus instaladores:
+
+- **Android:** desde `frontend`, ejecuta `npx eas-cli login` y `npm run build:android`; descarga la APK generada por EAS y adjúntala a la versión de GitHub.
+- **Windows:** desde `frontend`, ejecuta `npm run build:desktop`; adjunta `frontend/desktop-release/Cesmida-Setup-1.0.0-x64.exe` a la versión. El instalador actual requiere Docker Desktop.
+
+La APK necesita una URL de API HTTPS configurada mediante `EXPO_PUBLIC_API_URL` durante la compilación. No distribuyas una APK que apunte a `localhost` o a una IP local. La versión de escritorio actual inicia una API y base de datos locales con Docker, por lo que sus datos no se sincronizan automáticamente con la web ni con Android.
+
+Para un despliegue autoalojado tradicional, apunta el dominio del servidor a Docker y termina HTTPS con Caddy, Nginx o un proxy TLS equivalente. Añade el origen HTTPS a `ALLOWED_ORIGINS`. No expongas el puerto 5432 de PostgreSQL.
 
 ## Android y desarrollo local
 
